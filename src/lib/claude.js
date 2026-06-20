@@ -13,7 +13,7 @@ function buildPrompt({ nome, formData, oferta, obs }) {
     ? '\nNOTA: As informações sobre este lead são parciais. Para cada bloco do roteiro em que faltar dado importante, inclua entre colchetes uma sugestão de como obter essa informação durante a call. Ex: [Pergunta para descobrir: "Quanto você fatura hoje, em média?"]'
     : ''
 
-  return 'Você é um expert em vendas de alto ticket para mentorias e consultorias no Brasil.\n'
+  return 'Você é um expert em vendas de alto ticket para consultoria de Treinamento e Nutrição no Brasil.\n'
     + 'Domina SPIN Selling, GAP Selling e o framework CLOSER (Hormozi).\n\n'
     + personaSection
     + bar + '\n'
@@ -71,7 +71,7 @@ export async function generateRoteiro(leadData) {
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
       max_tokens: 4000,
-      system: 'Você é um expert em vendas de alto ticket para mentorias e consultorias no Brasil. Domina SPIN Selling, GAP Selling e o framework CLOSER (Hormozi). Gere roteiros de call estruturados, detalhados e personalizados. Responda em português brasileiro, de forma direta, sem introduções desnecessárias.',
+      system: 'Você é um expert em vendas de alto ticket para consultoria de Treinamento e Nutrição no Brasil. O vendedor é Treinador e Nutricionista. Domina SPIN Selling, GAP Selling e o framework CLOSER (Hormozi). Gere roteiros de call estruturados, detalhados e personalizados. Responda em português brasileiro, de forma direta, sem introduções desnecessárias.',
       messages: [{ role: 'user', content: prompt }],
     }),
   })

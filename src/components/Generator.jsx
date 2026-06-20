@@ -95,7 +95,7 @@ export default function Generator({ onSaved, loadLeadId, onLeadLoaded }) {
     const url = buildClaudeUrl({ nome: nome || detectNome(formData) || 'Lead', formData, oferta, obs })
     if (!hasKey()) {
       navigator.clipboard.writeText(
-        `Você é um expert em vendas de alto ticket para mentorias e consultorias no Brasil.\n\nFORMULÁRIO:\n${formData}`
+        `Você é um expert em vendas de alto ticket para consultoria de Treinamento e Nutrição no Brasil. O vendedor é Treinador e Nutricionista.\n\nFORMULÁRIO:\n${formData}`
       )
     }
     window.open(url, '_blank')
@@ -175,7 +175,7 @@ export default function Generator({ onSaved, loadLeadId, onLeadLoaded }) {
         className="sm"
         value={oferta}
         onChange={e => setOferta(e.target.value)}
-        placeholder="O que você vende: mentoria/consultoria, pra quem, ticket médio, seu método e diferenciais..."
+        placeholder="Ex: Consultoria de Treinamento e Nutrição individualizada, mulheres 25-35 anos, ticket R$X/mês, protocolo de remodelação corporal..."
       />
 
       <div className="fld-lbl">Observação sobre o lead <span className="opt">(opcional)</span></div>
