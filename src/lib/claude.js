@@ -53,25 +53,35 @@ function buildPrompt({ nome, formData, oferta, obs }) {
     + 'Linguagem: português brasileiro, tom de conversa, natural. Sem travessão nas falas.'
 }
 
-// Edge Function sempre disponível quando autenticado
 export const hasKey = () => true
 
 export async function generateRoteiro(leadData) {
   if (!supabase) throw new Error('Supabase não configurado.')
 
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) throw new Error('Sessão expirada. Faça login novamente.')
+
   const prompt = buildPrompt(leadData)
 
-  const { data, error } = await supabase.functions.invoke('generate-roteiro', {
-    body: {
+  const response = await fetch('/api/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({
       system: 'Você é um expert em vendas de alto ticket para consultoria de Treinamento e Nutrição no Brasil. O vendedor é Treinador e Nutricionista. Domina SPIN Selling, GAP Selling e o framework CLOSER (Hormozi). Gere roteiros de call estruturados, detalhados e personalizados. Responda em português brasileiro, de forma direta, sem introduções desnecessárias.',
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 4000,
-    },
+    }),
   })
 
-  if (error) throw new Error(error.message || 'Erro ao chamar o servidor.')
-  if (data?.error) throw new Error(data.error)
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}))
+    throw new Error(err.error || 'Erro ao chamar o servidor.')
+  }
 
+  const data = await response.json()
   return data.content[0].text
 }
 
